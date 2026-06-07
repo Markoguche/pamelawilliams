@@ -24,12 +24,11 @@ const T = {
   sageDark: "#1a3028",
   mid: "#6b6258",
   border: "rgba(13,13,13,0.1)",
-  // Updated Fonts
   display: "'Playfair Display', Georgia, serif",
   body: "'Inter', sans-serif",
 };
 
-// --- 3. GLOBAL STYLES (Added Responsive CSS) ---
+// --- 3. GLOBAL STYLES ---
 const GlobalStyle = () => {
   useEffect(() => {
     const style = document.createElement("style");
@@ -45,7 +44,6 @@ const GlobalStyle = () => {
         overflow-x: hidden;
       }
       
-      /* Hide custom cursor on touch devices */
       @media (hover: none) and (pointer: coarse) {
         body { cursor: auto; }
         .custom-cursor { display: none !important; }
@@ -64,7 +62,6 @@ const GlobalStyle = () => {
       button { cursor:pointer; }
       ::selection { background:${T.gold}40; }
 
-      /* --- Utility Classes for Responsiveness --- */
       .container {
         max-width: 1200px;
         margin: 0 auto;
@@ -103,7 +100,6 @@ const GlobalStyle = () => {
         }
       }
 
-      /* Animations */
       @keyframes fadeUp {
         from { opacity:0; transform:translateY(28px); }
         to   { opacity:1; transform:translateY(0); }
@@ -123,6 +119,16 @@ const GlobalStyle = () => {
       @keyframes pulse {
         0%,100% { box-shadow: 0 0 0 0 ${T.gold}40; }
         50%     { box-shadow: 0 0 0 10px ${T.gold}00; }
+      }
+
+      @media (max-width: 768px) {
+        section, main { overflow-x: hidden; }
+        @media (max-width: 380px) {
+          .hero-grid > div:first-child { padding-top: 6rem !important; }
+        }
+        #experience .container > div > div[style*="paddingLeft"] {
+          padding-left: 1.8rem !important;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -162,7 +168,6 @@ const useScrollReveal = (options = {}) => {
 // --- 5. COMPONENTS ---
 
 const Cursor = () => {
-  // Disable custom cursor on mobile/touch devices logic is handled in GlobalStyle
   const dotRef = useRef(null);
   const ringRef = useRef(null);
   const pos = useRef({ x: 0, y: 0 });
@@ -171,7 +176,6 @@ const Cursor = () => {
   const [big, setBig] = useState(false);
 
   useEffect(() => {
-    // Only run logic if screen is wide enough (hover capable)
     if (window.matchMedia("(hover: hover)").matches === false) return;
 
     const move = (e) => { pos.current = { x: e.clientX, y: e.clientY }; };
@@ -227,7 +231,7 @@ const Reveal = ({ children, delay = 0, style = {}, as: Tag = "div", ...rest }) =
   return (
     <Tag ref={ref} style={{
       opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(30px)",
+      transform: visible ? "translateY(0)" : "translateY(20px)",
       transition: `opacity .8s cubic-bezier(.16,1,.3,1) ${delay}s, transform .8s cubic-bezier(.16,1,.3,1) ${delay}s`,
       ...style,
     }} {...rest}>
@@ -260,7 +264,6 @@ const Nav = () => {
 
   const links = ["About","Experience","Ventures","Initiatives","Contact"];
 
-  // Mobile Menu Overlay
   if (isMobile) {
     return (
       <>
@@ -268,8 +271,8 @@ const Nav = () => {
           position:"fixed", top:0, left:0, right:0, zIndex:1000,
           padding: "1.2rem 1.5rem",
           display:"flex", justifyContent:"space-between", alignItems:"center",
-          background: "rgba(245,240,232,0.95)",
-          backdropFilter: "blur(10px)",
+          background: "rgba(245,240,232,0.97)",
+          backdropFilter: "blur(12px)",
           borderBottom: `1px solid ${T.border}`,
         }}>
           <a href="#hero" style={{ fontFamily:T.display, fontSize:"1.3rem", fontWeight:700, color:T.ink }}>
@@ -311,7 +314,9 @@ const Nav = () => {
     );
   }
 
-  // Desktop Nav
+  const linkColor = scrolled ? T.ink : T.paper;
+  const logoColor = scrolled ? T.ink : T.paper;
+
   return (
     <nav style={{
       position:"fixed", top:0, left:0, right:0, zIndex:1000,
@@ -322,7 +327,7 @@ const Nav = () => {
       borderBottom: scrolled ? `1px solid ${T.border}` : "none",
       transition:"all .4s cubic-bezier(.16,1,.3,1)",
     }}>
-      <a href="#hero" style={{ fontFamily:T.display, fontSize:"1.15rem", fontWeight:700, letterSpacing:".02em", color:T.ink }}>
+      <a href="#hero" style={{ fontFamily:T.display, fontSize:"1.15rem", fontWeight:700, letterSpacing:".02em", color: logoColor, transition:"color .4s" }}>
         Ijeoma Aladesaye
       </a>
       <ul style={{ display:"flex", gap:"2.5rem", listStyle:"none" }}>
@@ -330,10 +335,11 @@ const Nav = () => {
           <li key={l}>
             <a href={`#${l.toLowerCase()}`} style={{
               fontSize:"0.8rem", letterSpacing:"0.12em", textTransform:"uppercase",
-              color:T.ink, fontWeight: 500, position:"relative", // Made darker and slightly bolder
+              color: linkColor, fontWeight: 500, position:"relative",
+              transition:"color .4s",
             }}
-              onMouseEnter={e => { e.target.style.color = T.rust; }}
-              onMouseLeave={e => { e.target.style.color = T.ink; }}
+              onMouseEnter={e => { e.target.style.color = T.gold; }}
+              onMouseLeave={e => { e.target.style.color = linkColor; }}
             >
               {l}
             </a>
@@ -355,13 +361,11 @@ const Hero = () => {
 
   return (
     <section id="hero" className="hero-grid" style={{ position:"relative", overflow:"hidden" }}>
-      {/* Left / Mobile Order 2 */}
       <div style={{
-        display:"flex", flexDirection:"column", justifyContent: isMobile ? "center" : "flex-end",
-        padding: isMobile ? "8rem 1.5rem 4rem" : "8rem 3rem 6rem 4rem", 
+        display:"flex", flexDirection:"column", justifyContent: isMobile ? "flex-start" : "flex-end",
+        padding: isMobile ? "7rem 1.5rem 4rem" : "8rem 3rem 6rem 4rem",
         position:"relative", zIndex:2,
         order: isMobile ? 2 : 1,
-        minHeight: isMobile ? "60vh" : "auto"
       }}>
         <p style={{
           fontSize:"0.72rem", letterSpacing:"0.2em", textTransform:"uppercase",
@@ -407,49 +411,76 @@ const Hero = () => {
             onMouseLeave={e => { e.currentTarget.style.color = T.ink; e.currentTarget.style.borderColor = T.border; }}
           >Get in Touch</a>
         </div>
+
+        {isMobile && (
+          <div style={{
+            display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem",
+            marginTop:"2.5rem",
+            opacity:0, animation:"fadeUp .9s 1.1s cubic-bezier(.16,1,.3,1) forwards",
+          }}>
+            {stats.map((s, i) => (
+              <div key={i} style={{
+                background: `linear-gradient(135deg, ${T.sage} 0%, ${T.sageDark} 100%)`,
+                border:`1px solid rgba(255,255,255,0.15)`,
+                padding:"1.2rem",
+              }}>
+                <div style={{ fontFamily:T.display, fontSize:"2rem", fontWeight:400, lineHeight:1, color:T.goldLight }}>
+                  {s.num}
+                </div>
+                <div style={{ fontSize:"0.65rem", letterSpacing:"0.05em", textTransform:"uppercase", color:"rgba(245,240,232,0.7)", marginTop:"0.4rem", fontWeight:500 }}>
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Right / Mobile Order 1 */}
-      <div style={{ position:"relative", overflow:"hidden", order: isMobile ? 1 : 2, minHeight: isMobile ? "50vh" : "auto" }}>
+      <div style={{ 
+        position:"relative", overflow:"hidden", 
+        order: isMobile ? 1 : 2, 
+        minHeight: isMobile ? "45vh" : "auto",
+        display: isMobile ? "none" : "block" 
+      }}>
         <div style={{
           position:"absolute", inset:0,
           background:`linear-gradient(135deg, ${T.sage} 0%, ${T.sageDark} 100%)`,
-          clipPath: isMobile ? "none" : "polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%)",
+          clipPath: "polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%)",
           opacity:0, animation:"fadeIn 1.2s .2s cubic-bezier(.16,1,.3,1) forwards",
         }} />
-        
-        {/* Decorative rings */}
+
         <div style={{
           position:"absolute", top:"20%", right:"10%",
           width:180, height:180, borderRadius:"50%",
-          border:`1px solid rgba(255,255,255,0.07)`, zIndex:1, display: isMobile ? "none" : "block"
+          border:`1px solid rgba(255,255,255,0.07)`, zIndex:1,
         }} />
-        
-        {/* Stat cards */}
-        <div style={{
-          position:"absolute", bottom: isMobile ? "-2rem" : "4rem", left: isMobile ? "1.5rem" : "2rem", right: isMobile ? "1.5rem" : "2rem",
-          display:"grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr", gap:"1rem", zIndex:2,
-          opacity:0, animation:"fadeUp .9s 1.1s cubic-bezier(.16,1,.3,1) forwards",
-        }}>
-          {stats.map((s, i) => (
-            <div key={i} style={{
-              background:"rgba(255,255,255,0.08)",
-              backdropFilter:"blur(10px)",
-              border:"1px solid rgba(255,255,255,0.15)",
-              padding:"1.2rem",
-            }}>
-              <div style={{ fontFamily:T.display, fontSize:"2rem", fontWeight:400, lineHeight:1, color:T.goldLight }}>
-                {s.num}
+
+        {!isMobile && (
+          <div style={{
+            position:"absolute",
+            bottom:"4rem", left:"2rem", right:"2rem",
+            display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem", zIndex:2,
+            opacity:0, animation:"fadeUp .9s 1.1s cubic-bezier(.16,1,.3,1) forwards",
+          }}>
+            {stats.map((s, i) => (
+              <div key={i} style={{
+                background:"rgba(255,255,255,0.08)",
+                backdropFilter:"blur(10px)",
+                border:"1px solid rgba(255,255,255,0.15)",
+                padding:"1.2rem",
+              }}>
+                <div style={{ fontFamily:T.display, fontSize:"2rem", fontWeight:400, lineHeight:1, color:T.goldLight }}>
+                  {s.num}
+                </div>
+                <div style={{ fontSize:"0.65rem", letterSpacing:"0.05em", textTransform:"uppercase", color:"rgba(245,240,232,0.6)", marginTop:"0.4rem", fontWeight:500 }}>
+                  {s.label}
+                </div>
               </div>
-              <div style={{ fontSize:"0.65rem", letterSpacing:"0.05em", textTransform:"uppercase", color:"rgba(245,240,232,0.6)", marginTop:"0.4rem", fontWeight:500 }}>
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Scroll indicator */}
       {!isMobile && (
         <div style={{
           position:"absolute", bottom:"2.5rem", left:"50%", transform:"translateX(-50%)",
@@ -475,7 +506,7 @@ const competencies = [
 const About = () => {
   const isMobile = useIsMobile();
   return (
-    <section id="about" style={{ padding: isMobile ? "6rem 0" : "10rem 0", background:T.cream }}>
+    <section id="about" style={{ padding: isMobile ? "4rem 0" : "10rem 0", background:T.cream }}>
       <div className="container">
         <Reveal>
           <SectionLabel>About</SectionLabel>
@@ -484,9 +515,10 @@ const About = () => {
           </h2>
         </Reveal>
 
-        <div className="grid-2" style={{ alignItems:"start", marginTop:"4rem" }}>
+        <div className="grid-2" style={{ alignItems:"start", marginTop: isMobile ? "3rem" : "4rem", gap: isMobile ? "4rem" : "4rem" }}>
           {/* Visual card */}
-          <Reveal delay={0.1} style={{ position: isMobile ? "relative" : "sticky", top:"8rem" }}>
+          {/* FIX APPLIED: Conditionally applying 'top' property. It was pushing the card down 128px on mobile causing overlap. */}
+          <Reveal delay={0.1} style={{ position: isMobile ? "relative" : "sticky", top: isMobile ? "0" : "8rem" }}>
             <div style={{
               width:"100%", aspectRatio:"3/4",
               background:`linear-gradient(160deg, ${T.sage} 0%, ${T.sageDark} 100%)`,
@@ -526,7 +558,7 @@ const About = () => {
             ].map((el, i) => <Reveal key={i} delay={i * 0.12}>{el}</Reveal>)}
 
             <Reveal delay={0.35}>
-              <div style={{ marginTop:"3rem", display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.5rem" }}>
+              <div style={{ marginTop:"3rem", display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:"0.5rem" }}>
                 {competencies.map((c, i) => (
                   <div key={i} style={{
                     display:"flex", alignItems:"center", gap:"0.7rem",
@@ -563,7 +595,6 @@ const Impact = () => {
   
   return (
     <section id="impact" style={{ padding: isMobile ? "5rem 0" : "8rem 0", background:T.ink, overflow:"hidden" }}>
-      {/* Ticker */}
       <div style={{
         whiteSpace:"nowrap", overflow:"hidden",
         borderTop:`1px solid rgba(255,255,255,0.07)`,
@@ -670,7 +701,6 @@ const Experience = () => {
           </Reveal>
         </div>
 
-        {/* Timeline */}
         <div style={{ position:"relative" }}>
           <div style={{
             position:"absolute", left:0, top:0, bottom:0, width:1,
@@ -678,7 +708,6 @@ const Experience = () => {
           }} />
           {roles.map((r, i) => (
             <Reveal key={i} delay={i * 0.08} style={{ paddingLeft:"2.5rem", paddingBottom:"3rem", position:"relative" }}>
-              {/* dot */}
               <div style={{
                 position:"absolute", left:-5, top:"0.35rem",
                 width:10, height:10, background:T.gold, borderRadius:"50%",
@@ -762,7 +791,6 @@ const Ventures = () => {
                   transition:"background .4s",
                 }}
               >
-                {/* Hover green glow */}
                 <div style={{
                   position:"absolute", inset:0,
                   background:`linear-gradient(135deg, ${T.sage} 0%, transparent 60%)`,
@@ -925,7 +953,6 @@ const Contact = () => {
   const isMobile = useIsMobile();
   return (
     <section id="contact" style={{ padding: isMobile ? "6rem 0" : "10rem 0", background:T.sage, position:"relative", overflow:"hidden" }}>
-      {/* Decorative rings */}
       <div style={{ position:"absolute", top:"-6rem", right:"-6rem", width:"30rem", height:"30rem", borderRadius:"50%", border:"1px solid rgba(255,255,255,0.05)", pointerEvents:"none" }} />
       
       <div className="container">
@@ -965,7 +992,6 @@ const Contact = () => {
                 </div>
               ))}
 
-              {/* PMP badge */}
               <div style={{
                 display:"inline-flex", alignItems:"center", gap:"1rem",
                 padding:"1.2rem 1.5rem", marginTop:"2rem",
