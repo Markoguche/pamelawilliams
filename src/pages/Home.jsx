@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// --- 1. FONT LOADER (Updated to Inter + Playfair Display) ---
 const FontLoader = () => {
   useEffect(() => {
     const link = document.createElement("link");
@@ -12,7 +11,6 @@ const FontLoader = () => {
   return null;
 };
 
-// --- 2. THEME & TYPOGRAPHY ---
 const T = {
   ink: "#0d0d0d",
   paper: "#f5f0e8",
@@ -28,7 +26,7 @@ const T = {
   body: "'Inter', sans-serif",
 };
 
-// --- 3. GLOBAL STYLES ---
+
 const GlobalStyle = () => {
   useEffect(() => {
     const style = document.createElement("style");
@@ -262,7 +260,7 @@ const Nav = () => {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const links = ["About","Experience","Ventures","Initiatives","Contact"];
+  const links = ["About","Experience","Ventures","Initiatives","Gallery","Contact"];
 
   if (isMobile) {
     return (
@@ -505,6 +503,9 @@ const competencies = [
 
 const About = () => {
   const isMobile = useIsMobile();
+  
+  const aboutImageUrl = "https://z-cdn-media.chatglm.cn/files/4f61e953-c1d4-4f7d-ae02-00dca2a2825c.jpg?auth_key=1881611356-1bf8cf5dcc264a92ba4855297bf0d4c2-0-7246b2edf2c084c8c36a2d696a5d13b4";
+
   return (
     <section id="about" style={{ padding: isMobile ? "4rem 0" : "10rem 0", background:T.cream }}>
       <div className="container">
@@ -516,34 +517,45 @@ const About = () => {
         </Reveal>
 
         <div className="grid-2" style={{ alignItems:"start", marginTop: isMobile ? "3rem" : "4rem", gap: isMobile ? "4rem" : "4rem" }}>
-          {/* Visual card */}
-          {/* FIX APPLIED: Conditionally applying 'top' property. It was pushing the card down 128px on mobile causing overlap. */}
           <Reveal delay={0.1} style={{ position: isMobile ? "relative" : "sticky", top: isMobile ? "0" : "8rem" }}>
             <div style={{
               width:"100%", aspectRatio:"3/4",
-              background:`linear-gradient(160deg, ${T.sage} 0%, ${T.sageDark} 100%)`,
+              background: `linear-gradient(160deg, ${T.sage} 0%, ${T.sageDark} 100%)`,
               position:"relative", overflow:"hidden",
             }}>
+              <img 
+                src={aboutImageUrl} 
+                alt="Ijeoma Aladesaye Portrait" 
+                style={{ 
+                  width: "100%", 
+                  height: "100%", 
+                  objectFit: "cover", 
+                  position: "absolute", 
+                  top: 0, 
+                  left: 0 
+                }} 
+              />
+              
               <div style={{
                 position:"absolute", inset:"1.5rem",
-                border:"1px solid rgba(255,255,255,0.1)",
+                border:"1px solid rgba(255,255,255,0.2)",
                 display:"flex", flexDirection:"column", justifyContent:"flex-end",
                 padding:"1.5rem",
+                background: "linear-gradient(to top, rgba(26,48,40,0.9) 0%, rgba(26,48,40,0.4) 50%, transparent 100%)"
               }}>
-                <p style={{ fontFamily:T.display, fontSize:"1.1rem", fontStyle:"italic", color:"rgba(245,240,232,0.8)", lineHeight:1.6 }}>
+                <p style={{ fontFamily:T.display, fontSize:"1.1rem", fontStyle:"italic", color:"rgba(245,240,232,0.9)", lineHeight:1.6 }}>
                   "Innovation is not an event — it is an ecosystem you deliberately build, one founder at a time."
                 </p>
               </div>
               <div style={{
                 position:"absolute", bottom:"-1rem", right:"-1rem",
                 fontFamily:T.display, fontSize:"11rem", fontWeight:400,
-                color:"rgba(255,255,255,0.03)", lineHeight:1, pointerEvents:"none",
+                color:"rgba(255,255,255,0.05)", lineHeight:1, pointerEvents:"none",
                 userSelect:"none",
               }}>IA</div>
             </div>
           </Reveal>
 
-          {/* Bio */}
           <div>
             {[
               <p key={0} style={{ fontSize:"1.05rem", color:T.mid, marginBottom:"1.5rem", lineHeight:1.8 }}>
@@ -873,6 +885,294 @@ const Initiatives = () => {
   );
 };
 
+// --- GALLERY CAROUSEL SECTION (Narration removed) ---
+const galleryImages = [
+  { src: "https://z-cdn-media.chatglm.cn/files/ddc626f0-332b-495d-b9d7-7f586d40248b.jpg?auth_key=1881610194-2e2c8ac323ba45a8b75e1d0e04fcb6b1-0-813193d87f47438be1a27a6532b84ac5", alt: "Business meeting handshake" },
+  { src: "https://z-cdn-media.chatglm.cn/files/add64689-a07c-4e51-803f-ff43963969e6.jpg?auth_key=1881610194-84536edec1cd4122a0d2cc21d3c13d35-0-d33f1f9e726d3430a0ba9969bf7b4e1a", alt: "Interview on sofa" },
+  { src: "https://z-cdn-media.chatglm.cn/files/285f174d-258d-4a90-a985-1e27d428fa37.jpg?auth_key=1881610194-2993632f096f4318a6fe4d6849d795e7-0-c554fb085ddb7d3e4571b6fed510126c", alt: "Speaking at ServLead Global event" },
+  { src: "https://z-cdn-media.chatglm.cn/files/a0a1e9c4-3d53-4667-9d13-364d939744a3.jpg?auth_key=1881610194-5ddb5dbbafe64339a3d4f3ff7409f9a8-0-64fb462deb2d74aa4c31830e9e286699", alt: "Portrait in green top" },
+  { src: "https://z-cdn-media.chatglm.cn/files/c13d838c-fc46-4e87-b4a3-ee009c436164.jpg?auth_key=1881610194-c4ad2bd3b77e410193c134fcb24f6c06-0-879f82dadfb6bf2138df9917354c168f", alt: "Public speaking volunteer event" },
+  { src: "https://z-cdn-media.chatglm.cn/files/6063552b-8b40-4f6a-b554-1e090f40769f.jpg?auth_key=1881610194-99457f64e298491aac6a2091edacbc8b-0-980fd3bb5cbe68154cd27c7c567db7a2", alt: "Teaching in classroom" },
+  { src: "https://z-cdn-media.chatglm.cn/files/6461f09c-b3fe-45c1-8465-cf7266032fa7.jpg?auth_key=1881610194-4127a49d3a564e3e864fec76542ad119-0-7b7b29ff657fa1c0eacdc9d6d2b37ea7", alt: "Speaking at NCC event" },
+  { src: "https://z-cdn-media.chatglm.cn/files/2a3f27ae-645d-46ad-ae81-2c2cd65915df.jpg?auth_key=1881610194-f7b94a6a2f244255819aa306e4fde98c-0-60d20c797b24bce3c05f0792eb6ea429", alt: "Speaking at African University event" },
+  { src: "https://z-cdn-media.chatglm.cn/files/bf5ace49-262e-4dc6-9974-a0979a412c08.jpg?auth_key=1881610194-414857b2dd084785ac7d9c74fc2568ff-0-3faaf949b5345d2269664b92a90aaf3f", alt: "Panel discussion" },
+];
+
+const Gallery = () => {
+  const [current, setCurrent] = useState(0);
+  const isMobile = useIsMobile();
+  const count = galleryImages.length;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % count);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [count]);
+
+  const goTo = (index) => setCurrent(index);
+  const next = () => setCurrent((prev) => (prev + 1) % count);
+  const prev = () => setCurrent((prev) => (prev - 1 + count) % count);
+
+  return (
+    <section id="gallery" style={{ padding: isMobile ? "6rem 0" : "10rem 0", background: T.paper }}>
+      <div className="container">
+        <Reveal>
+          <SectionLabel>Gallery</SectionLabel>
+          <h2 style={{ fontFamily: T.display, fontSize: "clamp(2rem,3.5vw,3.2rem)", fontWeight: 400, lineHeight: 1.15 }}>
+            Moments in<br /><em style={{ fontStyle: "italic", color: T.rust }}>Motion.</em>
+          </h2>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <div style={{ position: "relative", marginTop: "3rem", overflow: "hidden", maxWidth: "900px", margin: "3rem auto 0" }}>
+            {/* Main Image Container */}
+            <div style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: isMobile ? "4/5" : "3/2", 
+              background: T.border,
+              overflow: "hidden",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
+            }}>
+              {galleryImages.map((img, index) => (
+                <div key={index} style={{
+                  position: "absolute", inset: 0,
+                  transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
+                  opacity: index === current ? 1 : 0,
+                  transform: index === current ? "scale(1)" : "scale(1.05)",
+                  zIndex: index === current ? 1 : 0,
+                }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src={img.src} 
+                    alt={img.alt} 
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                  />
+                   {/* Narration overlay removed as requested */}
+                </div>
+              ))}
+
+              {/* Navigation Arrows */}
+              <button onClick={prev} style={{
+                position: "absolute", top: "50%", left: "1rem", transform: "translateY(-50%)",
+                width: 48, height: 48, borderRadius: "50%", background: "rgba(245,240,232,0.9)",
+                border: "none", display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 2, cursor: "pointer",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+                transition: "transform 0.3s"
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "translateY(-50%) scale(1)"}
+              >
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.ink} strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button onClick={next} style={{
+                position: "absolute", top: "50%", right: "1rem", transform: "translateY(-50%)",
+                width: 48, height: 48, borderRadius: "50%", background: "rgba(245,240,232,0.9)",
+                border: "none", display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 2, cursor: "pointer",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+                transition: "transform 0.3s"
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "translateY(-50%) scale(1)"}
+              >
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.ink} strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+
+            {/* Dots Navigation */}
+            <div style={{
+              display: "flex", justifyContent: "center", gap: "0.75rem", marginTop: "2rem",
+            }}>
+              {galleryImages.map((_, i) => (
+                <button key={i} onClick={() => goTo(i)} style={{
+                  width: i === current ? 24 : 8, height: 8, borderRadius: 4,
+                  background: i === current ? T.gold : T.border,
+                  border: "none", transition: "width .3s, background .3s", cursor: "pointer",
+                }} />
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+// --- NEW AFRICAX SUMMIT CAROUSEL ---
+const africaXImages = [
+  { 
+    src: "https://z-cdn-media.chatglm.cn/files/bb90e494-e3a5-40c9-a235-16a74a79958c.jpg?auth_key=1881611899-7c8e0bbab79947d6a06781ff0d17a05b-0-6c39e751a168b0ae6e31157f3b1a641e", 
+    alt: "Speaking at AfricaX Summit 2026" 
+  },
+  { 
+    src: "https://z-cdn-media.chatglm.cn/files/212dd450-104c-45b2-8103-513e157ebc4c.jpg?auth_key=1881611899-88d8f28afa6e4ce9a764d865167f8d2d-0-4da818df1cc51012031226171c287507", 
+    alt: "Cultural exchange handshake" 
+  },
+  { 
+    src: "https://z-cdn-media.chatglm.cn/files/deac5d69-d3d2-4bbc-9d09-288d142390e0.jpg?auth_key=1881611899-05f9c8cc5f87440e908fdacdd034f53c-0-7de06d3c29fdfa23d52fa617e4ddc7f4", 
+    alt: "Partnership handshake ceremony" 
+  },
+  { 
+    src: "https://z-cdn-media.chatglm.cn/files/376d47f8-eab4-4aeb-b32a-f132d8409c54.jpg?auth_key=1881611899-9c66959720bc4584a16043fe5b3e5227-0-95e60bb2cdc42c35e9d0ee9f4fa5a242", 
+    alt: "Formal event greeting" 
+  },
+  { 
+    src: "https://z-cdn-media.chatglm.cn/files/1895c9bf-3969-4903-bec7-df784afe004a.jpg?auth_key=1881611899-a451f3176bfe4c9cb6ec35eae92761d5-0-8ecc292ae42e0dae0ca0e33102655478", 
+    alt: "Group discussion at summit" 
+  },
+  { 
+    src: "https://z-cdn-media.chatglm.cn/files/d55c2478-1b2b-48dd-b044-3649caf0901c.jpg?auth_key=1881611899-235fd9e95a41407d9e27c7dbdf6f4ee3-0-1d13b96c60979e4e9bc4feeff2b1866d", 
+    alt: "Team photo with African backdrop" 
+  },
+  { 
+    src: "https://z-cdn-media.chatglm.cn/files/589b0bc4-1fce-4a53-a45b-af1bed852623.jpg?auth_key=1881611899-e3d5335ca0b34eb78369948a1253a6d5-0-1e1717c2b14976b9a9a2a9216c6c6d2c", 
+    alt: "Keynote presentation" 
+  },
+];
+
+const AfricaXSummit = () => {
+  const [current, setCurrent] = useState(0);
+  const isMobile = useIsMobile();
+  const count = africaXImages.length;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % count);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [count]);
+
+  const goTo = (index) => setCurrent(index);
+  const next = () => setCurrent((prev) => (prev + 1) % count);
+  const prev = () => setCurrent((prev) => (prev - 1 + count) % count);
+
+  return (
+    <section id="africax" style={{ padding: isMobile ? "6rem 0" : "10rem 0", background: T.sageDark }}>
+      <div className="container">
+        <Reveal>
+          <SectionLabel light>AfricaX Summit 2026</SectionLabel>
+          <h2 style={{ fontFamily: T.display, fontSize: "clamp(2rem,3.5vw,3.2rem)", fontWeight: 400, lineHeight: 1.15, color: T.paper }}>
+            Connecting Across<br /><em style={{ fontStyle: "italic", color: T.rust }}>Continents.</em>
+          </h2>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <div style={{ position: "relative", marginTop: "3rem", overflow: "hidden", maxWidth: "1000px", margin: "3rem auto 0" }}>
+            {/* Main Image Container */}
+            <div style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: isMobile ? "4/5" : "16/9", 
+              background: T.ink,
+              overflow: "hidden",
+              boxShadow: "0 30px 60px rgba(0,0,0,0.3)",
+              border: "1px solid rgba(255,255,255,0.1)"
+            }}>
+              {africaXImages.map((img, index) => (
+                <div key={index} style={{
+                  position: "absolute", inset: 0,
+                  transition: "opacity 1.2s ease-in-out, transform 1.2s ease-in-out",
+                  opacity: index === current ? 1 : 0,
+                  transform: index === current ? "scale(1)" : "scale(1.08)",
+                  zIndex: index === current ? 1 : 0,
+                }}>
+                  <img 
+                    src={img.src} 
+                    alt={img.alt} 
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                  />
+                </div>
+              ))}
+
+              {/* Decorative corner elements */}
+              <div style={{
+                position: "absolute", top: 0, left: 0, width: 80, height: 80,
+                borderLeft: "2px solid rgba(201,168,76,0.5)",
+                borderTop: "2px solid rgba(201,168,76,0.5)",
+                pointerEvents: "none"
+              }} />
+              <div style={{
+                position: "absolute", bottom: 0, right: 0, width: 80, height: 80,
+                borderRight: "2px solid rgba(201,168,76,0.5)",
+                borderBottom: "2px solid rgba(201,168,76,0.5)",
+                pointerEvents: "none"
+              }} />
+
+              {/* Navigation Arrows */}
+              <button onClick={prev} style={{
+                position: "absolute", top: "50%", left: "1.5rem", transform: "translateY(-50%)",
+                width: 52, height: 52, borderRadius: "50%", background: "rgba(245,240,232,0.95)",
+                border: "none", display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 2, cursor: "pointer",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
+                transition: "transform 0.3s, background 0.3s"
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"; e.currentTarget.style.background = T.gold; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(-50%) scale(1)"; e.currentTarget.style.background = "rgba(245,240,232,0.95)"; }}
+              >
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.ink} strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button onClick={next} style={{
+                position: "absolute", top: "50%", right: "1.5rem", transform: "translateY(-50%)",
+                width: 52, height: 52, borderRadius: "50%", background: "rgba(245,240,232,0.95)",
+                border: "none", display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 2, cursor: "pointer",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
+                transition: "transform 0.3s, background 0.3s"
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"; e.currentTarget.style.background = T.gold; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(-50%) scale(1)"; e.currentTarget.style.background = "rgba(245,240,232,0.95)"; }}
+              >
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.ink} strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+
+              {/* Image Counter */}
+              <div style={{
+                position: "absolute", top: "1.5rem", right: "1.5rem",
+                background: "rgba(0,0,0,0.6)",
+                backdropFilter: "blur(8px)",
+                padding: "0.5rem 1rem",
+                borderRadius: "4px",
+                zIndex: 2
+              }}>
+                <span style={{ color: T.goldLight, fontFamily: T.body, fontSize: "0.85rem", fontWeight: 500 }}>
+                  {String(current + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+
+            {/* Progress Bar Navigation */}
+            <div style={{
+              display: "flex", justifyContent: "center", gap: "0.5rem", marginTop: "2rem",
+              maxWidth: "600px", margin: "2rem auto 0"
+            }}>
+              {africaXImages.map((_, i) => (
+                <button 
+                  key={i} 
+                  onClick={() => goTo(i)} 
+                  style={{
+                    flex: 1,
+                    height: 4, 
+                    borderRadius: 2,
+                    background: i === current ? T.gold : "rgba(201,168,76,0.2)",
+                    border: "none", 
+                    transition: "background .4s, transform .3s", 
+                    cursor: "pointer",
+                    transform: i === current ? "scaleY(1.5)" : "scaleY(1)"
+                  }} 
+                />
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
 const Education = () => {
   const [h1, setH1] = useState(false);
   const [h2, setH2] = useState(false);
@@ -902,7 +1202,7 @@ const Education = () => {
   );
 
   return (
-    <section id="education" style={{ padding: isMobile ? "6rem 0" : "8rem 0", background:T.paper }}>
+    <section id="education" style={{ padding: isMobile ? "6rem 0" : "8rem 0", background:T.cream }}>
       <div className="container">
         <Reveal>
           <SectionLabel>Education & Credentials</SectionLabel>
@@ -952,60 +1252,75 @@ const Education = () => {
 const Contact = () => {
   const isMobile = useIsMobile();
   return (
-    <section id="contact" style={{ padding: isMobile ? "6rem 0" : "10rem 0", background:T.sage, position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", top:"-6rem", right:"-6rem", width:"30rem", height:"30rem", borderRadius:"50%", border:"1px solid rgba(255,255,255,0.05)", pointerEvents:"none" }} />
-      
+    <section id="contact" style={{ padding: isMobile ? "6rem 0" : "10rem 0", background: T.ink }}>
       <div className="container">
-        <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1.2fr 1fr", gap:"5rem", alignItems:"center" }}>
+        <div className="grid-2" style={{ alignItems: "start", gap: isMobile ? "4rem" : "6rem" }}>
           <Reveal>
-            <SectionLabel light>Get In Touch</SectionLabel>
-            <h2 style={{ fontFamily:T.display, fontSize:"clamp(2rem,3.5vw,3.2rem)", fontWeight:400, lineHeight:1.15, color:T.paper }}>
-              Let's build something<br /><em style={{ fontStyle:"italic", color:T.goldLight }}>remarkable.</em>
+            <SectionLabel light>Contact</SectionLabel>
+            <h2 style={{ fontFamily: T.display, fontSize: "clamp(2rem,3.5vw,3.2rem)", fontWeight: 400, lineHeight: 1.15, color: T.paper }}>
+              Let's build<br /><em style={{ fontStyle: "italic", color: T.rust }}>something together.</em>
             </h2>
-            <p style={{ fontSize:"1rem", color:"rgba(245,240,232,0.7)", marginTop:"1.5rem", lineHeight:1.8 }}>
-              Whether you're a founder seeking incubation, an organisation looking to build an innovation programme, or a partner exploring ecosystem opportunities — Ijeoma would love to connect.
+            <p style={{ fontSize: "1rem", color: "rgba(245,240,232,0.6)", marginTop: "1.5rem", lineHeight: 1.8, maxWidth: 400 }}>
+              Whether you're looking to launch a venture, design a programme, or explore partnership opportunities — I'd love to hear from you.
             </p>
           </Reveal>
 
-          <Reveal delay={0.2}>
-            <div style={{ display:"flex", flexDirection:"column", gap:"0" }}>
-              {[
-                { label:"Email", value:"nwabueze.ijeoma03@gmail.com", href:"mailto:nwabueze.ijeoma03@gmail.com" },
-                { label:"Phone", value:"(+234) 705 339 8881", href:"tel:+2347053398881" },
-                { label:"Location", value:"Abuja, FCT, Nigeria" },
-              ].map((item, i) => (
-                <div key={i}>
-                  <div style={{ padding:"1.5rem 0" }}>
-                    <div style={{ fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", color:"rgba(245,240,232,0.4)", marginBottom:"0.35rem", fontWeight:600 }}>
-                      {item.label}
-                    </div>
-                    {item.href ? (
-                      <a href={item.href} style={{ fontSize:"1.1rem", color:T.paper, transition:"color .3s", fontWeight:500 }}
-                        onMouseEnter={e => e.currentTarget.style.color = T.goldLight}
-                        onMouseLeave={e => e.currentTarget.style.color = T.paper}
-                      >{item.value}</a>
-                    ) : (
-                      <span style={{ fontSize:"1.1rem", color:T.paper, fontWeight:500 }}>{item.value}</span>
-                    )}
-                  </div>
-                  <div style={{ height:1, background:"rgba(255,255,255,0.08)" }} />
+          <Reveal delay={0.15}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+              <a href="mailto:ijeoma@serveleadglobal.com" data-hover style={{
+                display: "flex", alignItems: "center", gap: "1rem",
+                padding: "1.5rem 2rem",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                transition: "background .3s, border-color .3s",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.borderColor = T.gold; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.gold} strokeWidth="1.5">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <div>
+                  <div style={{ fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(245,240,232,0.5)", marginBottom: "0.3rem" }}>Email</div>
+                  <div style={{ color: T.paper, fontSize: "1rem" }}>ijeoma@serveleadglobal.com</div>
                 </div>
-              ))}
+              </a>
+
+              <a href="https://linkedin.com/in/ijeomaaladesaye" target="_blank" rel="noopener noreferrer" data-hover style={{
+                display: "flex", alignItems: "center", gap: "1rem",
+                padding: "1.5rem 2rem",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                transition: "background .3s, border-color .3s",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.borderColor = T.gold; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.gold} strokeWidth="1.5">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+                <div>
+                  <div style={{ fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(245,240,232,0.5)", marginBottom: "0.3rem" }}>LinkedIn</div>
+                  <div style={{ color: T.paper, fontSize: "1rem" }}>linkedin.com/in/ijeomaaladesaye</div>
+                </div>
+              </a>
 
               <div style={{
-                display:"inline-flex", alignItems:"center", gap:"1rem",
-                padding:"1.2rem 1.5rem", marginTop:"2rem",
-                border:`1px solid rgba(201,168,76,0.4)`,
+                display: "flex", alignItems: "center", gap: "1rem",
+                padding: "1.5rem 2rem",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
               }}>
-                <div style={{
-                  width:40, height:40, background:T.gold, borderRadius:"50%",
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  fontSize:"0.7rem", fontWeight:700, color:T.ink, letterSpacing:"0.05em",
-                  flexShrink:0,
-                }}>PMP</div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.gold} strokeWidth="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
                 <div>
-                  <div style={{ fontSize:"0.8rem", color:T.goldLight, letterSpacing:"0.06em", fontWeight:600 }}>Project Management Professional</div>
-                  <div style={{ fontSize:"0.75rem", color:"rgba(245,240,232,0.5)" }}>Project Management Institute · Certified</div>
+                  <div style={{ fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(245,240,232,0.5)", marginBottom: "0.3rem" }}>Location</div>
+                  <div style={{ color: T.paper, fontSize: "1rem" }}>Abuja, Nigeria</div>
                 </div>
               </div>
             </div>
@@ -1019,26 +1334,23 @@ const Contact = () => {
 const Footer = () => {
   const isMobile = useIsMobile();
   return (
-    <footer style={{
-      background:T.ink, padding: isMobile ? "2rem 1.5rem" : "3rem 4rem",
-      display:"flex", 
-      flexDirection: isMobile ? "column" : "row",
-      justifyContent:"space-between", 
-      alignItems: isMobile ? "center" : "center",
-      gap: isMobile ? "1rem" : "0",
-      textAlign: isMobile ? "center" : "left"
-    }}>
-      <span style={{ fontFamily:T.display, fontSize:"1.1rem", color:"rgba(245,240,232,0.6)", fontStyle:"italic" }}>
-        Ijeoma Aladesaye
-      </span>
-      <span style={{ fontSize:"0.75rem", color:"rgba(245,240,232,0.3)", letterSpacing:"0.05em" }}>
-        © 2026 · Servelead Global Ltd · Abuja, Nigeria
-      </span>
+    <footer style={{ padding: "3rem 0", background: T.ink, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+      <div className="container">
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
+          <div style={{ fontFamily: T.display, fontSize: "1.1rem", color: T.paper, fontWeight: 400 }}>
+            Ijeoma Aladesaye
+          </div>
+          <div style={{ fontSize: "0.75rem", color: "rgba(245,240,232,0.4)", letterSpacing: "0.05em" }}>
+            © {new Date().getFullYear()} Servelead Global. All rights reserved.
+          </div>
+        </div>
+      </div>
     </footer>
   );
 };
 
-export default function Home() {
+// --- MAIN APP ---
+export default function App() {
   return (
     <>
       <FontLoader />
@@ -1052,6 +1364,8 @@ export default function Home() {
         <Experience />
         <Ventures />
         <Initiatives />
+        <Gallery />
+        <AfricaXSummit />
         <Education />
         <Contact />
       </main>
