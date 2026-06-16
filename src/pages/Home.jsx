@@ -1362,9 +1362,9 @@ export default function App() {
         <About />
         <Impact />
         <Experience />
+        <Gallery />
         <Ventures />
         <Initiatives />
-        <Gallery />
         <AfricaXSummit />
         <Education />
         <Contact />
