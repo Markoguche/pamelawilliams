@@ -32,11 +32,11 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #D4A853;
+  background: #D4AF37;
 }
 
 ::selection {
-  background: rgba(212, 168, 83, 0.35);
+  background: rgba(212, 175, 55, 0.35);
   color: #fff;
 }
 

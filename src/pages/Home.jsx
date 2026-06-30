@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollTriggerRefresh, useGsapStagger } from '../hooks/useGsap';
-import { FadeUp, SlideLeft, SlideRight, RevealText, ParallaxImg, ScaleIn } from '../components/GsapWrapper';
+import { FadeUp } from '../components/GsapWrapper';
 import img1 from '../assets/img1.jpg';
 import img2 from '../assets/img2.jpg';
 import img3 from '../assets/img3.jpg';
 import img6 from '../assets/img6.jpg';
-
+import { useBooking } from '../contexts/BookingContext';
 gsap.registerPlugin(ScrollTrigger);
 
 const roles = ['Brand Strategist', 'Storyteller', 'Experience Curator', 'Host', 'CEO', 'Founder'];
@@ -20,28 +20,34 @@ const services = [
   { num: '04', title: 'Social Media & Digital Marketing', desc: 'Growing presence by up to 200% through viral content and data-driven campaigns.' },
   { num: '05', title: 'Content Writing & Scriptwriting', desc: 'High-performing SEO content and engaging scripts for films and commercials.' },
   { num: '06', title: 'Event Hosting & Public Speaking', desc: 'Professional hosting, panel moderation, and conference facilitation.' },
-  { num: '07', title: 'HR & Business Advisory', desc: 'Building strong workplace cultures and implementing efficient operations.' },
+  { num: '07', title: 'PR & Communications', desc: 'Media relations, reputation management, press releases, and crisis communications.' },
   { num: '08', title: 'Training & Development', desc: 'Empowering thousands in digital marketing, branding, and AI-powered tools.' },
 ];
 
 const stats = [
+  { num: 10, suffix: '+', label: 'Years Experience' },
   { num: 150, suffix: '+', label: 'High-Level Events Managed' },
-  { num: 1500, suffix: '+', label: 'Respectech Conference Attendees' },
   { num: 200, suffix: '+', label: 'Brands & Businesses Served' },
   { num: 1000000, suffix: '+', label: 'Revenue Generated ($)' },
 ];
 
 const events = [
-  'Respectech Conference — 1,500 attendees (managed + hosted)',
-  'Innovate Africa Conference',
+  'French Up Your Career — French Embassy in Nigeria (host + managed)',
+  'Bilingual & Competitive Project — French Embassy (managed + media production)',
+  'Respectech Conference — 1,500+ attendees (hosted + managed + creative direction)',
+  'Innovate Africa Conference (managed + D-Day coordination)',
   'Dominium Blockchain Development Summit (managed + hosted)',
-  'National Peace Accord Signing (execution support)',
+  'Mandela Washington Fellowship 10th Anniversary (managed)',
+  'Launch of 44 Luxury, Abuja (host)',
+  'Clarity Conference — Lightbulb Consults (host + experience director)',
+  'Lagos Business School Sustainability Forum, Abuja Chapter (compere)',
+  'E Lawyers Career Fair Day 2024 (compere + events planner)',
   'Women in Bitcoin — "Count Her In" (host)',
-  'Clarity Conference: Constellation (host + experience director)',
-  'IVolunteer "Innovation for Impact" (host)',
-  'JO Series Digital Startup Event (host/speaker)',
-  'Servelead Global Mid-Year Training',
-  'DEPOWA Social Media Management Training',
+  'iVolunteer "Innovation for Impact" (host + organized)',
+  'National Peace Accord Signing (execution support)',
+  'Chef\'s Academy 10th Anniversary (host + planned + red carpet)',
+  'Abuja Food and Fashion Festival (managed media + production)',
+  'Aidos Creations Creative Hub Launch — 100+ HNIs (organized + hosted)',
 ];
 
 const testimonials = [
@@ -84,7 +90,8 @@ export default function Home() {
   const clientsRef = useRef(null);
   const counterRef = useRef(null);
   const countersRef = useRef([]);
-
+  const suffixRefs = useRef([]);
+  const { openModal } = useBooking();
   useScrollTriggerRefresh();
   useGsapStagger(heroTagsRef, '.hero-tag', 0.08);
   useGsapStagger(servicesGridRef, '.service-card', 0.08);
@@ -92,7 +99,6 @@ export default function Home() {
   useGsapStagger(testimonialsGridRef, '.testimonial-card', 0.06);
   useGsapStagger(clientsRef, '.client-chip', 0.04);
 
-  // Hero entrance
   useEffect(() => {
     if (!heroTitleRef.current) return;
     const ctx = gsap.context(() => {
@@ -108,11 +114,11 @@ export default function Home() {
     return () => ctx.revert();
   }, []);
 
-  // Animated counters
   useEffect(() => {
     const ctx = gsap.context(() => {
       stats.forEach((stat, i) => {
         const el = countersRef.current[i];
+        const suffixEl = suffixRefs.current[i];
         if (!el) return;
         const obj = { val: 0 };
         gsap.to(obj, {
@@ -124,12 +130,24 @@ export default function Home() {
             start: 'top 85%',
             end: 'bottom 15%',
             toggleActions: 'play reverse play reverse',
-            onEnter: () => { el.textContent = Math.floor(obj.val).toLocaleString() + stat.suffix; },
-            onLeave: () => { el.textContent = '0' + stat.suffix; },
-            onEnterBack: () => { el.textContent = Math.floor(obj.val).toLocaleString() + stat.suffix; },
-            onLeaveBack: () => { el.textContent = '0' + stat.suffix; },
+            onEnter: () => {
+              el.textContent = Math.floor(obj.val).toLocaleString();
+              if (suffixEl) suffixEl.style.opacity = '1';
+            },
+            onLeave: () => {
+              el.textContent = '0';
+              if (suffixEl) suffixEl.style.opacity = '0.3';
+            },
+            onEnterBack: () => {
+              el.textContent = Math.floor(obj.val).toLocaleString();
+              if (suffixEl) suffixEl.style.opacity = '1';
+            },
+            onLeaveBack: () => {
+              el.textContent = '0';
+              if (suffixEl) suffixEl.style.opacity = '0.3';
+            },
           },
-          onUpdate: () => { el.textContent = Math.floor(obj.val).toLocaleString() + stat.suffix; },
+          onUpdate: () => { el.textContent = Math.floor(obj.val).toLocaleString(); },
         });
       });
     }, counterRef);
@@ -138,7 +156,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* ═══════ HERO ═══════ */}
+      {/* HERO */}
       <section className="relative min-h-screen flex items-end overflow-hidden" aria-label="Hero">
         <div className="absolute inset-0">
           <img src={img1} alt="Pamela Williams — Award-winning Brand Strategist" className="w-full h-full object-cover object-top" loading="eager" />
@@ -146,10 +164,10 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
         </div>
 
-        <div className="absolute top-32 right-10 w-px h-32 bg-gradient-to-b from-gold-400/50 to-transparent hidden lg:block" />
+        <div className="absolute top-32 right-10 w-px h-32 bg-gradient-to-b from-[#D4AF37]/50 to-transparent hidden lg:block" />
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pb-20 md:pb-32 pt-36 w-full">
-          <p className="text-gold-400 text-[11px] tracking-ultrawide uppercase mb-8 font-semibold">
+          <p className="text-[#D4AF37] text-[11px] tracking-ultrawide uppercase mb-8 font-semibold">
             Brand Strategist &middot; Storyteller &middot; Experience Curator
           </p>
 
@@ -157,7 +175,7 @@ export default function Home() {
             <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] font-black text-white leading-[0.9] tracking-tight">
               <span className="block">I Know</span>
               <span className="block">Exactly What</span>
-              <span className="block text-gold-400">You Need</span>
+              <span className="block text-[#D4AF37]">You Need</span>
             </h1>
           </div>
 
@@ -168,7 +186,7 @@ export default function Home() {
           <div ref={heroCtaRef} className="flex flex-wrap gap-4">
             <Link
               to="/services"
-              className="inline-flex items-center gap-3 bg-gold-400 text-black px-8 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:bg-gold-300 transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_40px_rgba(212,168,83,0.3)]"
+              className="inline-flex items-center gap-3 bg-[#D4AF37] text-black px-8 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:bg-[#e0bd4a] transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_40px_rgba(212,175,55,0.3)]"
               style={{ opacity: 0 }}
             >
               Explore Services
@@ -176,7 +194,7 @@ export default function Home() {
             </Link>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-3 border border-white/20 text-white px-8 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:border-gold-400 hover:text-gold-400 transition-all duration-300 hover:translate-y-[-2px]"
+              className="inline-flex items-center gap-3 border border-white/20 text-white px-8 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all duration-300 hover:translate-y-[-2px]"
               style={{ opacity: 0 }}
             >
               Get in Touch
@@ -187,7 +205,7 @@ export default function Home() {
             {roles.map((tag) => (
               <span
                 key={tag}
-                className="hero-tag px-4 py-1.5 border border-white/10 text-white/40 text-[10px] tracking-ultrawide uppercase hover:border-gold-400/50 hover:text-gold-400 transition-all duration-300 cursor-default"
+                className="hero-tag px-4 py-1.5 border border-white/10 text-white/40 text-[10px] tracking-ultrawide uppercase hover:border-[#D4AF37]/50 hover:text-[#D4AF37] transition-all duration-300 cursor-default"
                 style={{ opacity: 0 }}
               >
                 {tag}
@@ -198,15 +216,15 @@ export default function Home() {
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-3">
           <span className="text-white/20 text-[9px] tracking-mega uppercase">Scroll</span>
-          <div className="w-px h-10 bg-gradient-to-b from-gold-400/60 to-transparent animate-pulse" />
+          <div className="w-px h-10 bg-gradient-to-b from-[#D4AF37]/60 to-transparent animate-pulse" />
         </div>
       </section>
 
-      {/* ═══════ SERVICES ═══════ */}
+      {/* SERVICES / SOLUTIONS */}
       <section className="bg-white py-20 md:py-32" aria-label="Services overview">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <FadeUp>
-            <p className="text-gold-500 text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Solutions</p>
+            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Solutions</p>
           </FadeUp>
           <FadeUp delay={100}>
             <h2 className="text-3xl md:text-5xl font-black text-black text-center mb-4">What&apos;s Included</h2>
@@ -217,19 +235,23 @@ export default function Home() {
 
           <div ref={servicesGridRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {services.map((s) => (
-              <article
+              <Link
                 key={s.num}
-                className="service-card group relative p-7 border border-black/5 hover:border-gold-500/50 transition-all duration-700 cursor-default overflow-hidden"
+                to="/services"
+                className="service-card group relative p-7 border border-black/5 hover:border-[#D4AF37]/50 transition-all duration-700 cursor-pointer overflow-hidden block"
                 style={{ opacity: 0 }}
               >
                 <div className="absolute inset-0 bg-black -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-in-out" />
                 <div className="relative z-10">
-                  <span className="text-gold-500 group-hover:text-gold-400 text-4xl font-black leading-none transition-colors duration-700">{s.num}</span>
+                  <span className="text-[#D4AF37] group-hover:text-[#D4AF37] text-4xl font-black leading-none transition-colors duration-700">{s.num}</span>
                   <h3 className="text-base font-bold text-black group-hover:text-white mt-3 mb-2 transition-colors duration-700">{s.title}</h3>
                   <p className="text-black/40 group-hover:text-white/50 text-sm leading-relaxed transition-colors duration-700">{s.desc}</p>
                 </div>
-                <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-gold-400 group-hover:w-full transition-all duration-700" />
-              </article>
+                <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D4AF37] group-hover:w-full transition-all duration-700" />
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+                  <svg className="w-4 h-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </div>
+              </Link>
             ))}
           </div>
 
@@ -237,9 +259,9 @@ export default function Home() {
             <div className="text-center mt-12">
               <Link
                 to="/services"
-                className="inline-flex items-center gap-3 text-black text-[11px] font-bold tracking-ultrawide uppercase border-b border-black/20 pb-1 hover:border-gold-500 hover:text-gold-600 transition-all duration-300 group"
+                className="inline-flex items-center gap-3 text-black text-[11px] font-bold tracking-ultrawide uppercase border-b border-black/20 pb-1 hover:border-[#D4AF37] hover:text-[#b8962e] transition-all duration-300 group"
               >
-                View Full Service Details
+                View Full Service Details & Pricing
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </Link>
             </div>
@@ -247,8 +269,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════ MANIFESTO ═══════ */}
-      <section className="relative min-h-[85vh] md:min-h-[90vh] overflow-hidden" aria-label="Brand manifesto">
+      {/* MANIFESTO REPLACEMENT */}
+      <section className="relative min-h-[85vh] md:min-h-[90vh] overflow-hidden" aria-label="About Pamela Williams">
         <div className="absolute inset-0">
           <img 
             src={img6} 
@@ -263,19 +285,18 @@ export default function Home() {
 
         <div className="relative z-10 min-h-[85vh] md:min-h-[90vh] flex flex-col justify-end max-w-[1400px] mx-auto px-6 lg:px-10 pb-16 md:pb-24 pt-40 md:pt-56">
           <div className="max-w-2xl">
-            <p className="text-gold-400 text-[10px] tracking-ultrawide uppercase mb-6 font-bold">The Manifesto</p>
+            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-6 font-bold">What I Do</p>
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight mb-8">
-              You deserve a brand that is{' '}
-              <span className="text-gold-400 italic">seen,</span>{' '}
-              <span className="text-gold-400 italic">loved,</span>{' '}
-              <span className="text-gold-400 italic">remembered.</span>
+              I don&apos;t just build brands —{' '}
+              <span className="text-[#D4AF37] italic">I build</span>{' '}
+              <span className="text-[#D4AF37] italic">ecosystems.</span>
             </h2>
             <p className="text-white/50 text-base md:text-lg leading-relaxed mb-10 max-w-lg">
-              Imagine if you could connect, serve, and resonate with thousands of customers at scale — without the appearance bottlenecks holding you back.
+              From hosting conferences for thousands to structuring brand strategies that transform businesses, I bring everything to the table from strategy to storytelling, experience, and execution so you don&apos;t have to piece it together yourself. Over 200 brands have trusted me to turn their vision into results.
             </p>
             <Link
               to="/about"
-              className="inline-flex items-center gap-3 text-gold-400 text-[11px] font-bold tracking-ultrawide uppercase border-b border-gold-400/30 pb-1 hover:border-gold-400 transition-all duration-300 group"
+              className="inline-flex items-center gap-3 text-[#D4AF37] text-[11px] font-bold tracking-ultrawide uppercase border-b border-[#D4AF37]/30 pb-1 hover:border-[#D4AF37] transition-all duration-300 group"
             >
               Learn More About Me
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
@@ -284,26 +305,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════ STATS ═══════ */}
-      <section className="bg-gold-500 py-16 md:py-20" aria-label="Key statistics" ref={counterRef}>
+      {/* STATS */}
+      <section className="bg-[#D4AF37] py-16 md:py-20" aria-label="Key statistics" ref={counterRef}>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
               <div key={stat.label} className="text-center">
-                <div
-                  ref={(el) => (countersRef.current[i] = el)}
-                  className="text-4xl md:text-5xl lg:text-6xl font-black text-black mb-2"
-                >
-                  0{stat.suffix}
+                <div className="flex items-baseline justify-center gap-1">
+                  <span
+                    ref={(el) => (countersRef.current[i] = el)}
+                    className="text-4xl md:text-5xl lg:text-6xl font-black text-black"
+                  >
+                    0
+                  </span>
+                  <span
+                    ref={(el) => (suffixRefs.current[i] = el)}
+                    className="text-4xl md:text-5xl lg:text-6xl font-black text-black"
+                    style={{ opacity: 0.3 }}
+                  >
+                    {stat.suffix}
+                  </span>
                 </div>
-                <p className="text-black/50 text-[10px] tracking-ultrawide uppercase font-semibold">{stat.label}</p>
+                <p className="text-black/50 text-[10px] tracking-ultrawide uppercase font-semibold mt-2">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════ EXPERIENCE ═══════ */}
+      {/* EXPERIENCE */}
       <section className="bg-white py-20 md:py-32" aria-label="Experience and events">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
@@ -313,7 +343,7 @@ export default function Home() {
                   <img src={img3} alt="Pamela Williams hosting Respectech Conference" className="w-full h-full object-cover img-grayscale img-zoom" loading="lazy" />
                 </div>
                 <div className="mt-4 flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gold-500 flex items-center justify-center">
+                  <div className="w-8 h-8 bg-[#D4AF37] flex items-center justify-center">
                     <span className="text-black text-xs font-black">150+</span>
                   </div>
                   <p className="text-black/30 text-[10px] tracking-ultrawide uppercase">Events Successfully Managed</p>
@@ -321,10 +351,10 @@ export default function Home() {
               </div>
             </div>
             <div className="lg:col-span-3">
-              <p className="text-gold-500 text-[10px] tracking-ultrawide uppercase mb-4 font-bold">Experience</p>
-              <h2 className="text-3xl md:text-4xl font-black text-black mb-4">Signature Events</h2>
+              <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold">Experience</p>
+              <h2 className="text-3xl md:text-4xl font-black text-black mb-4">Signature Events & Projects</h2>
               <p className="text-black/40 mb-10 leading-relaxed">
-                A highly sought-after event curator, conference manager, and host with a portfolio spanning tech, governance, social impact, international development, and creative industries.
+                From diplomatic events with the French Embassy to hosting 1,500+ attendee tech conferences, managing the Mandela Washington Fellowship 10th anniversary, and building partnerships with institutions like the National Gallery of Art — Pamela brings precision, creativity, and authority to every stage and project.
               </p>
               <div ref={eventsListRef}>
                 {events.map((event, i) => (
@@ -332,7 +362,7 @@ export default function Home() {
                     key={i}
                     className="event-item flex items-start gap-5 py-4 border-b border-black/5 group cursor-default"
                   >
-                    <span className="text-gold-500 font-mono text-sm mt-0.5 shrink-0 group-hover:text-gold-600 transition-colors duration-300">
+                    <span className="text-[#D4AF37] font-mono text-sm mt-0.5 shrink-0 group-hover:text-[#b8962e] transition-colors duration-300">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span className="text-black/60 group-hover:text-black text-sm transition-colors duration-300">{event}</span>
@@ -344,11 +374,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════ TESTIMONIALS ═══════ */}
+      {/* TESTIMONIALS */}
       <section className="bg-black py-20 md:py-32" aria-label="Client testimonials">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <FadeUp>
-            <p className="text-gold-400 text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Testimonials</p>
+            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Testimonials</p>
           </FadeUp>
           <FadeUp delay={100}>
             <h2 className="text-3xl md:text-5xl font-black text-white text-center mb-16">What They Say</h2>
@@ -358,12 +388,12 @@ export default function Home() {
             {testimonials.map((t) => (
               <blockquote
                 key={t.name}
-                className="testimonial-card group p-7 border border-white/10 hover:border-gold-400/40 transition-all duration-700 flex flex-col"
+                className="testimonial-card group p-7 border border-white/10 hover:border-[#D4AF37]/40 transition-all duration-700 flex flex-col"
                 style={{ opacity: 0 }}
               >
                 <div className="flex gap-0.5 mb-4">
                   {[...Array(5)].map((_, j) => (
-                    <svg key={j} className="w-3 h-3 text-gold-500" fill="currentColor" viewBox="0 0 20 20">
+                    <svg key={j} className="w-3 h-3 text-[#D4AF37]" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                   ))}
@@ -373,7 +403,7 @@ export default function Home() {
                 </p>
                 <footer className="border-t border-white/10 pt-4">
                   <cite className="not-italic">
-                    <span className="font-bold text-white/80 text-sm group-hover:text-gold-400 transition-colors duration-500">{t.name}</span>
+                    <span className="font-bold text-white/80 text-sm group-hover:text-[#D4AF37] transition-colors duration-500">{t.name}</span>
                   </cite>
                 </footer>
               </blockquote>
@@ -382,23 +412,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════ CLIENTS ═══════ */}
+      {/* CLIENTS */}
       <section className="bg-white py-16 md:p-24" aria-label="Client brands">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <FadeUp>
-            <p className="text-gold-500 text-[10px] tracking-ultrawide uppercase mb-3 font-bold text-center">Portfolio</p>
+            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-3 font-bold text-center">Portfolio</p>
           </FadeUp>
           <FadeUp delay={100}>
             <h2 className="text-3xl md:text-4xl font-black text-black text-center mb-3">These Brands Can&apos;t Get Enough</h2>
           </FadeUp>
           <FadeUp delay={200}>
-            <p className="text-gold-500 text-center mb-12 font-bold">Of Her Magic.</p>
+            <p className="text-[#D4AF37] text-center mb-12 font-bold">Of Her Magic.</p>
           </FadeUp>
           <div ref={clientsRef} className="flex flex-wrap justify-center gap-2.5">
             {clients.map((c) => (
               <span
                 key={c}
-                className="client-chip px-4 py-2 border border-black/10 text-black/40 text-xs hover:border-gold-500 hover:text-gold-600 transition-all duration-500 cursor-default"
+                className="client-chip px-4 py-2 border border-black/10 text-black/40 text-xs hover:border-[#D4AF37] hover:text-[#b8962e] transition-all duration-500 cursor-default"
                 style={{ opacity: 0 }}
               >
                 {c}
@@ -408,26 +438,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════ CTA ═══════ */}
+      {/* CTA */}
       <section className="relative py-24 md:py-32 bg-black overflow-hidden" aria-label="Booking call to action">
         <div className="absolute inset-0 opacity-15">
           <img src={img2} alt="" className="w-full h-full object-cover" loading="lazy" aria-hidden="true" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
-          <p className="text-gold-400 text-[10px] tracking-ultrawide uppercase mb-6 font-semibold">We're Currently Booking</p>
+          <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-6 font-semibold">We're Currently Booking</p>
           <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-tight mb-6">
-            Ready to<br /><span className="text-gold-400">Level Up?</span>
+            Ready to<br /><span className="text-[#D4AF37]">Level Up?</span>
           </h2>
           <p className="text-white/40 text-lg leading-relaxed mb-10">
             Pamela didn't just step into the world of media, branding, and business — she built her own table, set the stage, and invited others to thrive alongside her. Now it's your turn.
           </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-3 bg-gold-400 text-black px-10 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:bg-gold-300 transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_40px_rgba(212,168,83,0.3)]"
-          >
-            Book Your Session
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-          </Link>
+         <button
+          onClick={openModal}
+          className="inline-flex items-center gap-3 bg-[#D4AF37] text-black px-10 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:bg-[#e0bd4a] transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_40px_rgba(212,175,55,0.3)] cursor-pointer"
+        >
+          Book Your Session
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </button>
         </div>
       </section>
     </div>

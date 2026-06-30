@@ -66,8 +66,8 @@ function ScrollToTop() {
 const seoData = {
   '/': { title: 'Pamela Williams \u2014 Global Creative Luminary | Brand Strategist & Storyteller', description: 'Award-winning Brand, Marketing & Communications Strategist helping brands stand out, scale, and succeed through strategic storytelling, experience curation, and digital marketing.' },
   '/about': { title: 'About Pamela Williams \u2014 Creative Industrialist & Brand Strategist', description: 'Learn about Pamela Williams, a Creative Industrialist and award-winning strategist whose work sits at the intersection of creativity, strategy, and global impact.' },
-  '/services': { title: 'Services \u2014 Pamela Williams | Brand Strategy, Storytelling, Events & More', description: 'Explore Pamela Williams\u2019 solutions: brand strategy, storytelling, experience curation, digital marketing, event hosting, HR advisory, and professional training.' },
-  '/contact': { title: 'Contact Pamela Williams \u2014 Book Your Session', description: 'Get in touch with Pamela Williams for brand strategy, event management, public speaking, or training. Book your session today.' },
+  '/services': { title: 'Services \u2014 Pamela Williams | Brand Strategy, Events, PR, Training & More', description: 'Explore Pamela Williams\u2019 solutions: brand strategy, PR services, event hosting, experience curation, digital marketing, scriptwriting, HR advisory, and professional training.' },
+  '/contact': { title: 'Contact Pamela Williams \u2014 Book Your Session', description: 'Get in touch with Pamela Williams for brand strategy, event management, public speaking, PR, or training. Book your session today.' },
 };
 
 function AppRoutes() {
@@ -94,18 +94,32 @@ export default function App() {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Pamela Williams",
-      "jobTitle": ["Brand Strategist", "Storyteller", "Experience Curator", "CEO", "Founder"],
+      "jobTitle": ["Brand Strategist", "Storyteller", "Experience Curator", "CEO", "Founder", "Creative Industrialist"],
       "description": "Award-winning Brand, Marketing & Communications Strategist whose work sits at the intersection of creativity, strategy, and global impact.",
       "url": "https://www.pamelawilliams.com",
       "image": "/img1.jpg",
+      "telephone": "+2349077937879",
+      "email": "thepamelawilliams@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Abuja",
+        "addressCountry": "NG"
+      },
+      "sameAs": [
+        "https://www.instagram.com/thepamelawilliams",
+        "https://www.tiktok.com/@thepamelawilliams",
+        "https://x.com/pamelawilliams_",
+        "https://www.linkedin.com/in/thepamelawilliams"
+      ],
       "worksFor": [
         { "@type": "Organization", "name": "Aidos Creations" },
         { "@type": "Organization", "name": "Girlstuffng" },
         { "@type": "Organization", "name": "Allsweetnessng" },
         { "@type": "Organization", "name": "Allsweetness Events" },
-        { "@type": "Organization", "name": "Starlights Africa" }
+        { "@type": "Organization", "name": "Starlights Africa" },
+        { "@type": "Organization", "name": "Cremetalent Africa" }
       ],
-      "knowsAbout": ["Brand Strategy", "Marketing", "Communications", "Storytelling", "Event Curation", "Digital Marketing", "Public Speaking", "Creative Direction", "Project Management"],
+      "knowsAbout": ["Brand Strategy", "Marketing", "Communications", "Public Relations", "Storytelling", "Event Curation", "Digital Marketing", "Public Speaking", "Creative Direction", "Project Management", "Scriptwriting", "HR & Recruitment", "Training & Development"],
     });
     document.head.appendChild(script);
     return () => document.head.removeChild(script);

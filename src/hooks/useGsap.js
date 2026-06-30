@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Continuous fade-up that replays every scroll pass
+// Animates in once and stays visible — elements never disappear
 export function useGsapFadeUp(ref, delay = 0, y = 60) {
   useEffect(() => {
     if (!ref.current) return;
@@ -20,9 +20,8 @@ export function useGsapFadeUp(ref, delay = 0, y = 60) {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: ref.current,
-            start: 'top 88%',
-            end: 'bottom 12%',
-            toggleActions: 'play reverse play reverse',
+            start: 'top 90%',
+            once: true,
           },
         }
       );
@@ -31,7 +30,6 @@ export function useGsapFadeUp(ref, delay = 0, y = 60) {
   }, [ref, delay, y]);
 }
 
-// Continuous slide from left
 export function useGsapSlideLeft(ref, delay = 0, x = -80) {
   useEffect(() => {
     if (!ref.current) return;
@@ -47,9 +45,8 @@ export function useGsapSlideLeft(ref, delay = 0, x = -80) {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: ref.current,
-            start: 'top 85%',
-            end: 'bottom 15%',
-            toggleActions: 'play reverse play reverse',
+            start: 'top 88%',
+            once: true,
           },
         }
       );
@@ -58,7 +55,6 @@ export function useGsapSlideLeft(ref, delay = 0, x = -80) {
   }, [ref, delay, x]);
 }
 
-// Continuous slide from right
 export function useGsapSlideRight(ref, delay = 0, x = 80) {
   useEffect(() => {
     if (!ref.current) return;
@@ -74,9 +70,8 @@ export function useGsapSlideRight(ref, delay = 0, x = 80) {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: ref.current,
-            start: 'top 85%',
-            end: 'bottom 15%',
-            toggleActions: 'play reverse play reverse',
+            start: 'top 88%',
+            once: true,
           },
         }
       );
@@ -85,7 +80,6 @@ export function useGsapSlideRight(ref, delay = 0, x = 80) {
   }, [ref, delay, x]);
 }
 
-// Continuous scale in
 export function useGsapScaleIn(ref, delay = 0, scale = 0.85) {
   useEffect(() => {
     if (!ref.current) return;
@@ -101,9 +95,8 @@ export function useGsapScaleIn(ref, delay = 0, scale = 0.85) {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: ref.current,
-            start: 'top 85%',
-            end: 'bottom 15%',
-            toggleActions: 'play reverse play reverse',
+            start: 'top 88%',
+            once: true,
           },
         }
       );
@@ -112,7 +105,6 @@ export function useGsapScaleIn(ref, delay = 0, scale = 0.85) {
   }, [ref, delay, scale]);
 }
 
-// Continuous text reveal (clip-path)
 export function useGsapRevealText(ref, delay = 0) {
   useEffect(() => {
     if (!ref.current) return;
@@ -128,9 +120,8 @@ export function useGsapRevealText(ref, delay = 0) {
           ease: 'power4.inOut',
           scrollTrigger: {
             trigger: ref.current,
-            start: 'top 88%',
-            end: 'bottom 12%',
-            toggleActions: 'play reverse play reverse',
+            start: 'top 90%',
+            once: true,
           },
         }
       );
@@ -139,7 +130,6 @@ export function useGsapRevealText(ref, delay = 0) {
   }, [ref, delay]);
 }
 
-// Continuous stagger children
 export function useGsapStagger(ref, selector, stagger = 0.08) {
   useEffect(() => {
     if (!ref.current) return;
@@ -155,9 +145,8 @@ export function useGsapStagger(ref, selector, stagger = 0.08) {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: ref.current,
-            start: 'top 85%',
-            end: 'bottom 15%',
-            toggleActions: 'play reverse play reverse',
+            start: 'top 88%',
+            once: true,
           },
         }
       );
@@ -166,7 +155,6 @@ export function useGsapStagger(ref, selector, stagger = 0.08) {
   }, [ref, selector, stagger]);
 }
 
-// Parallax on image
 export function useGsapParallax(ref, speed = -40) {
   useEffect(() => {
     if (!ref.current) return;
@@ -186,7 +174,6 @@ export function useGsapParallax(ref, speed = -40) {
   }, [ref, speed]);
 }
 
-// Refresh ScrollTrigger on mount (for route changes)
 export function useScrollTriggerRefresh() {
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -196,7 +183,6 @@ export function useScrollTriggerRefresh() {
   }, []);
 }
 
-// Animate page entrance
 export function useGsapPageEnter(ref) {
   useEffect(() => {
     if (!ref.current) return;
