@@ -101,11 +101,11 @@ export default function Contact() {
                     <label htmlFor="c-budget" className="block text-[10px] tracking-ultrawide uppercase text-black/40 font-bold mb-2">Budget Range</label>
                     <select id="c-budget" className="w-full px-4 py-3.5 border border-black/10 focus:border-[#D4AF37] focus:ring-0 outline-none transition-all duration-300 text-black text-sm bg-transparent">
                       <option value="">Select budget range</option>
-                      <option>Under \u20A6500,000</option>
-                      <option>\u20A6500,000 \u2014 \u20A61,000,000</option>
-                      <option>\u20A61,000,000 \u2014 \u20A62,000,000</option>
-                      <option>\u20A62,000,000 \u2014 \u20A65,000,000</option>
-                      <option>Above \u20A65,000,000</option>
+                      <option>Under 500,000</option>
+                      <option>500,000 - 1,000,000</option>
+                      <option>1,000,000 - 2,000,000</option>
+                      <option>2,000,000 - 5,000,000</option>
+                      <option>Above 5,000,000</option>
                     </select>
                   </div>
                   <div>

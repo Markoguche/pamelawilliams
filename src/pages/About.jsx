@@ -1,6 +1,7 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useScrollTriggerRefresh, useGsapStagger } from '../hooks/useGsap';
-import { FadeUp, SlideLeft, SlideRight, RevealText } from '../components/GsapWrapper';
+import { FadeUp, SlideLeft, RevealText } from '../components/GsapWrapper';
 import img2 from '../assets/img2.jpg';
 import img4 from '../assets/img4.jpg';
 import img5 from '../assets/img5.jpg';
@@ -199,13 +200,13 @@ export default function About() {
             </div>
 
             <div className="lg:col-span-3 lg:pt-8">
-              <p className="text-black/55 text-base leading-relaxed mb-3 md:mb-5">
+              <p className="text-black/60 text-base leading-relaxed mb-3 md:mb-5">
                 Pamela Williams is a Creative Industrialist and award-winning Brand, Marketing, and Communications Strategist whose work sits at the intersection of creativity, strategy, and global impact.
               </p>
-              <p className="text-black/55 text-base leading-relaxed mb-3 md:mb-5">
+              <p className="text-black/60 text-base leading-relaxed mb-3 md:mb-5">
                 Widely recognized for empowering brands, championing creativity, and transforming ideas into revenue, she has built an international footprint through her work with diplomatic bodies, global institutions, creative enterprises, NGOs, corporates, and high-growth startups.
               </p>
-              <p className="text-black/55 text-base leading-relaxed mb-3 md:mb-5">
+              <p className="text-black/60 text-base leading-relaxed mb-3 md:mb-5">
                 A dynamic force with multidimensional expertise, Pamela helps organizations elevate their visibility, sharpen their identity, and scale their influence through a mastery of creative direction, experience curation, project management, digital marketing, brand strategy, content development, storytelling, and strategic communications.
               </p>
               <div className="border-l-2 border-[#D4AF37] pl-5 my-5 md:my-8">
@@ -218,7 +219,7 @@ export default function About() {
                 {expertise.map((item) => (
                   <div key={item} className="expertise-item flex items-start gap-3 py-2 md:py-2.5 border-b border-black/5 group cursor-default" style={{ opacity: 0 }}>
                     <ExpertiseIcon />
-                    <span className="text-black/55 text-sm group-hover:text-black transition-colors duration-300">{item}</span>
+                    <span className="text-black/60 text-sm group-hover:text-black transition-colors duration-300">{item}</span>
                   </div>
                 ))}
               </div>
@@ -236,9 +237,9 @@ export default function About() {
           <FadeUp delay={80}>
             <h2 className="text-2xl md:text-4xl font-black text-white text-center mb-3">Brands I&apos;ve Built</h2>
           </FadeUp>
-          <FadeUp delay={160}>
-            <p className="text-white/25 text-center max-w-lg mx-auto mb-12 text-sm">A multi-sector founder building brands that reflect passion for creativity, strategy, lifestyle, and community. Her companies have supported over 200 brands.</p>
-          </FadeUp>
+          <p className="text-white/50 text-center max-w-lg mx-auto mb-12 text-sm leading-relaxed">
+            A multi-sector founder building brands that reflect passion for creativity, strategy, lifestyle, and community. Her companies have supported over 200 brands.
+          </p>
 
           <div ref={venturesRef} className="space-y-3">
             {ventures.map((v) => (
@@ -269,20 +270,16 @@ export default function About() {
       {/* TRAINING */}
       <section className="bg-white py-16 md:py-24" aria-label="Training expertise">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <FadeUp>
-            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold">Training</p>
-          </FadeUp>
-          <FadeUp delay={80}>
-            <h2 className="text-2xl md:text-3xl font-black text-black mb-3">Areas of Training</h2>
-          </FadeUp>
-          <FadeUp delay={160}>
-            <p className="text-black/35 text-sm mb-10 max-w-lg">Pamela has trained hundreds of emerging entrepreneurs, creators, and professionals across:</p>
-          </FadeUp>
+          <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold">Training</p>
+          <h2 className="text-2xl md:text-3xl font-black text-black mb-3">Areas of Training</h2>
+          <p className="text-black/50 text-sm mb-10 max-w-lg leading-relaxed">
+            Pamela has trained hundreds of emerging entrepreneurs, creators, and professionals across these areas:
+          </p>
           <div ref={trainingRef} className="flex flex-wrap gap-2.5">
             {trainingTopics.map((topic) => (
               <span
                 key={topic}
-                className="training-item flex items-center gap-2 px-5 py-2.5 border border-black/10 text-black/45 text-sm hover:border-[#D4AF37] hover:text-[#b8962e] transition-all duration-500 cursor-default"
+                className="training-item flex items-center gap-2 px-5 py-2.5 border border-black/10 text-black/50 text-sm hover:border-[#D4AF37] hover:text-[#b8962e] transition-all duration-500 cursor-default"
                 style={{ opacity: 0 }}
               >
                 <TrainingIcon />
@@ -295,7 +292,7 @@ export default function About() {
             <div className="mt-14 p-6 bg-black rounded-sm">
               <p className="text-[#D4AF37] text-[9px] tracking-ultrawide uppercase font-bold mb-2">Landmark Collaboration</p>
               <h3 className="text-white font-black text-xl mb-3">National Gallery of Art, Nigeria</h3>
-              <p className="text-white/35 text-sm leading-relaxed mb-4">
+              <p className="text-white/40 text-sm leading-relaxed mb-4">
                 Leading a landmark collaboration to provide quarterly nationwide social media training, creative workshops for children across 25 centers, staff capacity building, brand repositioning, event curation and communications strategy, and funding partnership support.
               </p>
               <div className="flex flex-wrap gap-2">
@@ -334,17 +331,15 @@ export default function About() {
               </SlideLeft>
             </div>
             <div className="lg:col-span-3 space-y-8 lg:pt-8">
-              <SlideRight delay={80}>
-                <h2 className="text-2xl md:text-3xl font-black text-white mb-2">Awards & Achievements</h2>
-              </SlideRight>
+              {/* NO animation wrapper — heading is always visible */}
+              <h2 className="text-2xl md:text-3xl font-black text-white mb-8">Awards & Achievements</h2>
 
               <div>
-                <SlideRight delay={160}>
-                  <h3 className="flex items-center gap-2.5 mb-4">
-                    <AwardIcon filled />
-                    <span className="text-sm font-black text-white">2025 Awards</span>
-                  </h3>
-                </SlideRight>
+                {/* NO animation wrapper — subheading is always visible */}
+                <h3 className="flex items-center gap-2.5 mb-4">
+                  <AwardIcon filled />
+                  <span className="text-sm font-black text-white">2025 Awards</span>
+                </h3>
                 <div ref={awards2025Ref}>
                   {awards2025.map((a, i) => (
                     <div key={i} className="award-item flex items-start gap-2.5 py-2 border-b border-white/5" style={{ opacity: 0 }}>
@@ -356,12 +351,11 @@ export default function About() {
               </div>
 
               <div>
-                <SlideRight delay={240}>
-                  <h3 className="flex items-center gap-2.5 mb-4">
-                    <AwardIcon />
-                    <span className="text-sm font-black text-white">2024 Awards</span>
-                  </h3>
-                </SlideRight>
+                {/* NO animation wrapper */}
+                <h3 className="flex items-center gap-2.5 mb-4">
+                  <AwardIcon />
+                  <span className="text-sm font-black text-white">2024 Awards</span>
+                </h3>
                 <div ref={awards2024Ref}>
                   {awards2024.map((a, i) => (
                     <div key={i} className="award-item flex items-start gap-2.5 py-2 border-b border-white/5" style={{ opacity: 0 }}>
@@ -373,12 +367,11 @@ export default function About() {
               </div>
 
               <div>
-                <SlideRight delay={320}>
-                  <h3 className="flex items-center gap-2.5 mb-4">
-                    <AwardIcon />
-                    <span className="text-sm font-black text-white">Previous Awards</span>
-                  </h3>
-                </SlideRight>
+                {/* NO animation wrapper */}
+                <h3 className="flex items-center gap-2.5 mb-4">
+                  <AwardIcon />
+                  <span className="text-sm font-black text-white">Previous Awards</span>
+                </h3>
                 <div ref={previousAwardsRef}>
                   {previousAwards.map((a, i) => (
                     <div key={i} className="award-item flex items-start gap-2.5 py-2 border-b border-white/5" style={{ opacity: 0 }}>
@@ -390,12 +383,11 @@ export default function About() {
               </div>
 
               <div>
-                <SlideRight delay={400}>
-                  <h3 className="flex items-center gap-2.5 mb-4">
-                    <TrainingIcon />
-                    <span className="text-sm font-black text-white">Academic & Early</span>
-                  </h3>
-                </SlideRight>
+                {/* NO animation wrapper */}
+                <h3 className="flex items-center gap-2.5 mb-4">
+                  <TrainingIcon />
+                  <span className="text-sm font-black text-white">Academic & Early</span>
+                </h3>
                 <div ref={academicRef}>
                   {academicAwards.map((a, i) => (
                     <div key={i} className="award-item flex items-start gap-2.5 py-2 border-b border-white/5" style={{ opacity: 0 }}>
@@ -419,12 +411,13 @@ export default function About() {
           <FadeUp delay={80}>
             <h2 className="text-2xl md:text-3xl font-black text-black text-center mb-3">International Partners</h2>
           </FadeUp>
-          <FadeUp delay={160}>
-            <p className="text-black/30 text-center max-w-lg mx-auto mb-10 text-sm">Collaborated with top-tier global institutions across diplomacy, development, and creative industries. Her international versatility has made her a trusted partner for initiatives focused on youth empowerment, digital inclusion, cultural exchange, education, social impact, and global development.</p>
-          </FadeUp>
+          {/* NO animation wrapper — description always visible */}
+          <p className="text-black/50 text-center max-w-lg mx-auto mb-10 text-sm leading-relaxed">
+            Collaborated with top-tier global institutions across diplomacy, development, and creative industries. Her international versatility has made her a trusted partner for initiatives focused on youth empowerment, digital inclusion, cultural exchange, education, social impact, and global development.
+          </p>
           <div ref={partnersRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
             {partners.map((p) => (
-              <div key={p} className="partner-item flex items-center gap-2 border border-black/8 p-3.5 text-black/35 text-xs text-center hover:border-[#D4AF37]/40 hover:text-[#b8962e] transition-all duration-500 cursor-default" style={{ opacity: 0 }}>
+              <div key={p} className="partner-item flex items-center gap-2 border border-black/8 p-3.5 text-black/50 text-xs text-center hover:border-[#D4AF37]/40 hover:text-[#b8962e] transition-all duration-500 cursor-default" style={{ opacity: 0 }}>
                 <PartnerIcon />
                 <span className="text-left">{p}</span>
               </div>
