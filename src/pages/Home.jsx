@@ -25,10 +25,10 @@ const services = [
 ];
 
 const stats = [
-  { num: 10, suffix: '+', label: 'Years Experience' },
-  { num: 150, suffix: '+', label: 'High-Level Events Managed' },
-  { num: 200, suffix: '+', label: 'Brands & Businesses Served' },
-  { num: 1000000, suffix: '+', label: 'Revenue Generated ($)' },
+  { num: 10, suffix: '+', label: 'Years Experience', display: '10+' },
+  { num: 150, suffix: '+', label: 'High-Level Events Managed', display: '150+' },
+  { num: 200, suffix: '+', label: 'Brands & Businesses Served', display: '200+' },
+  { num: 1000000, suffix: '+', label: 'Revenue Generated ($)', display: '$1M+' },
 ];
 
 const events = [
@@ -90,8 +90,8 @@ export default function Home() {
   const clientsRef = useRef(null);
   const counterRef = useRef(null);
   const countersRef = useRef([]);
-  const suffixRefs = useRef([]);
   const { openModal } = useBooking();
+
   useScrollTriggerRefresh();
   useGsapStagger(heroTagsRef, '.hero-tag', 0.08);
   useGsapStagger(servicesGridRef, '.service-card', 0.08);
@@ -99,6 +99,7 @@ export default function Home() {
   useGsapStagger(testimonialsGridRef, '.testimonial-card', 0.06);
   useGsapStagger(clientsRef, '.client-chip', 0.04);
 
+  // Hero entrance
   useEffect(() => {
     if (!heroTitleRef.current) return;
     const ctx = gsap.context(() => {
@@ -114,11 +115,11 @@ export default function Home() {
     return () => ctx.revert();
   }, []);
 
+  // Animated counters — uses pre-defined display strings so nothing overflows
   useEffect(() => {
     const ctx = gsap.context(() => {
       stats.forEach((stat, i) => {
         const el = countersRef.current[i];
-        const suffixEl = suffixRefs.current[i];
         if (!el) return;
         const obj = { val: 0 };
         gsap.to(obj, {
@@ -128,26 +129,15 @@ export default function Home() {
           scrollTrigger: {
             trigger: el,
             start: 'top 85%',
-            end: 'bottom 15%',
-            toggleActions: 'play reverse play reverse',
-            onEnter: () => {
-              el.textContent = Math.floor(obj.val).toLocaleString();
-              if (suffixEl) suffixEl.style.opacity = '1';
-            },
-            onLeave: () => {
-              el.textContent = '0';
-              if (suffixEl) suffixEl.style.opacity = '0.3';
-            },
-            onEnterBack: () => {
-              el.textContent = Math.floor(obj.val).toLocaleString();
-              if (suffixEl) suffixEl.style.opacity = '1';
-            },
-            onLeaveBack: () => {
-              el.textContent = '0';
-              if (suffixEl) suffixEl.style.opacity = '0.3';
-            },
+            once: true,
           },
-          onUpdate: () => { el.textContent = Math.floor(obj.val).toLocaleString(); },
+          onUpdate: () => {
+            if (obj.val >= stat.num * 0.99) {
+              el.textContent = stat.display;
+            } else {
+              el.textContent = Math.floor(obj.val).toLocaleString() + stat.suffix;
+            }
+          },
         });
       });
     }, counterRef);
@@ -156,7 +146,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* HERO */}
+      {/* ═══════ HERO ═══════ */}
       <section className="relative min-h-screen flex items-end overflow-hidden" aria-label="Hero">
         <div className="absolute inset-0">
           <img src={img1} alt="Pamela Williams — Award-winning Brand Strategist" className="w-full h-full object-cover object-top" loading="eager" />
@@ -220,18 +210,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVICES / SOLUTIONS */}
+      {/* ═══════ SOLUTIONS ═══════ */}
       <section className="bg-white py-20 md:py-32" aria-label="Services overview">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <FadeUp>
-            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Solutions</p>
-          </FadeUp>
-          <FadeUp delay={100}>
-            <h2 className="text-3xl md:text-5xl font-black text-black text-center mb-4">What&apos;s Included</h2>
-          </FadeUp>
-          <FadeUp delay={200}>
-            <p className="text-black/30 text-center max-w-xl mx-auto mb-16">Needing clarity and support? Here is how Pamela transforms your brand, business, and presence.</p>
-          </FadeUp>
+          <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Solutions</p>
+          <h2 className="text-3xl md:text-5xl font-black text-black text-center mb-4">What&apos;s Included</h2>
+          <p className="text-black/60 text-center max-w-xl mx-auto mb-10 text-sm leading-relaxed">
+            Needing clarity and support? Here is how Pamela transforms your brand, business, and presence.
+          </p>
 
           <div ref={servicesGridRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {services.map((s) => (
@@ -255,21 +241,19 @@ export default function Home() {
             ))}
           </div>
 
-          <FadeUp delay={300}>
-            <div className="text-center mt-12">
-              <Link
-                to="/services"
-                className="inline-flex items-center gap-3 text-black text-[11px] font-bold tracking-ultrawide uppercase border-b border-black/20 pb-1 hover:border-[#D4AF37] hover:text-[#b8962e] transition-all duration-300 group"
-              >
-                View Full Service Details & Pricing
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-              </Link>
-            </div>
-          </FadeUp>
+          <div className="text-center mt-10">
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-3 text-black text-[11px] font-bold tracking-ultrawide uppercase border-b border-black/20 pb-1 hover:border-[#D4AF37] hover:text-[#b8962e] transition-all duration-300 group"
+            >
+              View Full Service Details & Pricing
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* MANIFESTO REPLACEMENT */}
+      {/* ═══════ MANIFESTO REPLACEMENT ═══════ */}
       <section className="relative min-h-[85vh] md:min-h-[90vh] overflow-hidden" aria-label="About Pamela Williams">
         <div className="absolute inset-0">
           <img 
@@ -292,7 +276,7 @@ export default function Home() {
               <span className="text-[#D4AF37] italic">ecosystems.</span>
             </h2>
             <p className="text-white/50 text-base md:text-lg leading-relaxed mb-10 max-w-lg">
-              From hosting conferences for thousands to structuring brand strategies that transform businesses, I bring everything to the table from strategy to storytelling, experience, and execution so you don&apos;t have to piece it together yourself. Over 200 brands have trusted me to turn their vision into results.
+              From hosting conferences for thousands to structuring brand strategies that transform businesses, I bring everything to the table — strategy, storytelling, experience, and execution — so you don&apos;t have to piece it together yourself. Over 200 brands have trusted me to turn their vision into results.
             </p>
             <Link
               to="/about"
@@ -305,35 +289,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STATS */}
+      {/* ═══════ STATS ═══════ */}
       <section className="bg-[#D4AF37] py-16 md:py-20" aria-label="Key statistics" ref={counterRef}>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
-              <div key={stat.label} className="text-center">
-                <div className="flex items-baseline justify-center gap-1">
-                  <span
-                    ref={(el) => (countersRef.current[i] = el)}
-                    className="text-4xl md:text-5xl lg:text-6xl font-black text-black"
-                  >
-                    0
-                  </span>
-                  <span
-                    ref={(el) => (suffixRefs.current[i] = el)}
-                    className="text-4xl md:text-5xl lg:text-6xl font-black text-black"
-                    style={{ opacity: 0.3 }}
-                  >
-                    {stat.suffix}
-                  </span>
-                </div>
-                <p className="text-black/50 text-[10px] tracking-ultrawide uppercase font-semibold mt-2">{stat.label}</p>
+              <div key={stat.label} className="text-center min-w-0">
+                <span
+                  ref={(el) => (countersRef.current[i] = el)}
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-black block mb-2"
+                >
+                  0{stat.suffix}
+                </span>
+                <p className="text-black/50 text-[10px] tracking-ultrawide uppercase font-semibold">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* EXPERIENCE */}
+      {/* ═══════ EXPERIENCE ═══════ */}
       <section className="bg-white py-20 md:py-32" aria-label="Experience and events">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
@@ -353,7 +328,7 @@ export default function Home() {
             <div className="lg:col-span-3">
               <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold">Experience</p>
               <h2 className="text-3xl md:text-4xl font-black text-black mb-4">Signature Events & Projects</h2>
-              <p className="text-black/40 mb-10 leading-relaxed">
+              <p className="text-black/60 mb-10 leading-relaxed">
                 From diplomatic events with the French Embassy to hosting 1,500+ attendee tech conferences, managing the Mandela Washington Fellowship 10th anniversary, and building partnerships with institutions like the National Gallery of Art — Pamela brings precision, creativity, and authority to every stage and project.
               </p>
               <div ref={eventsListRef}>
@@ -374,15 +349,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* ═══════ TESTIMONIALS ═══════ */}
       <section className="bg-black py-20 md:py-32" aria-label="Client testimonials">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <FadeUp>
-            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Testimonials</p>
-          </FadeUp>
-          <FadeUp delay={100}>
-            <h2 className="text-3xl md:text-5xl font-black text-white text-center mb-16">What They Say</h2>
-          </FadeUp>
+          <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-4 font-bold text-center">Testimonials</p>
+          <h2 className="text-3xl md:text-5xl font-black text-white text-center mb-4">What They Say</h2>
+          <p className="text-white/50 text-center max-w-xl mx-auto mb-10 text-sm leading-relaxed">
+            Don&apos;t just take our word for it — hear from the brands, executives, and organizations that have experienced the Pamela Williams difference.
+          </p>
 
           <div ref={testimonialsGridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {testimonials.map((t) => (
@@ -412,18 +386,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CLIENTS */}
+      {/* ═══════ CLIENTS ═══════ */}
       <section className="bg-white py-16 md:p-24" aria-label="Client brands">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <FadeUp>
-            <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-3 font-bold text-center">Portfolio</p>
-          </FadeUp>
-          <FadeUp delay={100}>
-            <h2 className="text-3xl md:text-4xl font-black text-black text-center mb-3">These Brands Can&apos;t Get Enough</h2>
-          </FadeUp>
-          <FadeUp delay={200}>
-            <p className="text-[#D4AF37] text-center mb-12 font-bold">Of Her Magic.</p>
-          </FadeUp>
+          <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-3 font-bold text-center">Portfolio</p>
+          <h2 className="text-3xl md:text-4xl font-black text-black text-center mb-3">These Brands Can&apos;t Get Enough</h2>
+          <p className="text-black/60 text-center max-w-lg mx-auto mb-4 text-sm leading-relaxed">
+            Over 200 brands and organizations have trusted Pamela to elevate their visibility, sharpen their identity, and scale their influence.
+          </p>
+          <p className="text-[#D4AF37] text-center mb-10 font-bold">Of Her Magic.</p>
           <div ref={clientsRef} className="flex flex-wrap justify-center gap-2.5">
             {clients.map((c) => (
               <span
@@ -438,26 +409,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ═══════ CTA ═══════ */}
       <section className="relative py-24 md:py-32 bg-black overflow-hidden" aria-label="Booking call to action">
         <div className="absolute inset-0 opacity-15">
           <img src={img2} alt="" className="w-full h-full object-cover" loading="lazy" aria-hidden="true" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
-          <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-6 font-semibold">We're Currently Booking</p>
+          <p className="text-[#D4AF37] text-[10px] tracking-ultrawide uppercase mb-6 font-semibold">We&apos;re Currently Booking</p>
           <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-tight mb-6">
             Ready to<br /><span className="text-[#D4AF37]">Level Up?</span>
           </h2>
           <p className="text-white/40 text-lg leading-relaxed mb-10">
-            Pamela didn't just step into the world of media, branding, and business — she built her own table, set the stage, and invited others to thrive alongside her. Now it's your turn.
+            Pamela didn&apos;t just step into the world of media, branding, and business — she built her own table, set the stage, and invited others to thrive alongside her. Now it&apos;s your turn.
           </p>
-         <button
-          onClick={openModal}
-          className="inline-flex items-center gap-3 bg-[#D4AF37] text-black px-10 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:bg-[#e0bd4a] transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_40px_rgba(212,175,55,0.3)] cursor-pointer"
-        >
-          Book Your Session
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-        </button>
+          <button
+            onClick={openModal}
+            className="inline-flex items-center gap-3 bg-[#D4AF37] text-black px-10 py-4 text-[11px] font-bold tracking-ultrawide uppercase hover:bg-[#e0bd4a] transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_10px_40px_rgba(212,175,55,0.3)] cursor-pointer"
+          >
+            Book Your Session
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </button>
         </div>
       </section>
     </div>
