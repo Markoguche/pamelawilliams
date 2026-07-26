@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useScrollTriggerRefresh, useGsapStagger } from '../hooks/useGsap';
 import { FadeUp, RevealText } from '../components/GsapWrapper';
 import { getCompaniesByType } from '../data/companies';
+import img3 from '../assets/img3.jpg';
 
 export default function Companies() {
   const companiesGridRef = useRef(null);
@@ -20,8 +21,9 @@ export default function Companies() {
     <div>
       {/* HERO */}
       <section className="relative py-32 md:py-44 bg-black overflow-hidden" aria-label="Companies overview">
-        <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full bg-gradient-to-br from-[#D4AF37]/20 via-black to-black" />
+        <div className="absolute inset-0">
+          <img src={img3} alt="" className="w-full h-full object-cover opacity-20" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40" />
         </div>
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
           <FadeUp>
