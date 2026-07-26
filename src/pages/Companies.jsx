@@ -64,15 +64,15 @@ export default function Companies() {
                 style={{ opacity: 0 }}
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-black/5">
-                  <img
-                    src={company.previewImage}
-                    alt={company.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  {/* Abbreviation Overlay for logos */}
-                  {company.logo && (
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                  {company.logo ? (
+                    <img
+                      src={company.previewImage}
+                      alt={company.name}
+                      className="w-full h-full object-contain p-6 group-hover:scale-105 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 to-black flex items-center justify-center">
                       <span className="text-white font-black text-3xl md:text-4xl tracking-tighter">{company.shortName}</span>
                     </div>
                   )}
@@ -121,15 +121,15 @@ export default function Companies() {
                 style={{ opacity: 0 }}
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-white/5">
-                  <img
-                    src={community.previewImage}
-                    alt={community.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  {/* Abbreviation Overlay for logos */}
-                  {community.logo && (
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                  {community.logo ? (
+                    <img
+                      src={community.previewImage}
+                      alt={community.name}
+                      className="w-full h-full object-contain p-6 group-hover:scale-105 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 to-black flex items-center justify-center">
                       <span className="text-white font-black text-3xl md:text-4xl tracking-tighter">{community.shortName}</span>
                     </div>
                   )}
