@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Diamond } from 'lucide-react';
 import {
   useGsapFadeUp,
   useGsapSlideLeft,
@@ -108,4 +109,32 @@ ParallaxImg.propTypes = {
   alt: PropTypes.string.isRequired,
   className: PropTypes.string,
   speed: PropTypes.number,
+};
+
+export default function MarqueeStrip({ text = 'PAMELA WILLIAMS', reverse = false }) {
+  const repeated = Array(8).fill(text).join('  ');
+  
+  return (
+    <div className="py-5 border-y border-white/10 overflow-hidden bg-black">
+      <div
+        className="whitespace-nowrap text-white/10 text-6xl md:text-8xl font-black tracking-mega uppercase animate-marquee flex items-center gap-6"
+        style={{
+          animationDirection: reverse ? 'reverse' : 'normal',
+          animationDuration: '25s',
+        }}
+      >
+        {Array(16).fill(null).map((_, i) => (
+          <span key={i} className="flex items-center gap-6 shrink-0">
+            <span>{text}</span>
+            <Diamond className="w-4 h-4 text-white/10" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+MarqueeStrip.propTypes = {
+  text: PropTypes.string,
+  reverse: PropTypes.bool,
 };
